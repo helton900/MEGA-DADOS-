@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mega Dados</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('peixe.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    header {
+      background-color: rgba(216, 41, 41, 0.9);
+      padding: 20px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      box-shadow: 0 2px 10px #000;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px 20px;
+      background-color: rgba(0, 0, 0, 0.75);
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+
+    h2 {
+      color: #ff4747;
+      margin-top: 40px;
+      border-bottom: 2px solid #ff4747;
+      padding-bottom: 5px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card p {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+
+    .card button {
+      background: #ff4747;
+      border: none;
+      padding: 10px;
+      color: white;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .card button:hover {
+      background: #cc0000;
+    }
+
+    .info {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 1em;
+      line-height: 1.6;
+      color: #ffdede;
+    }
+
+    .whatsapp-btn {
+      display: inline-block;
+      background-color: #25D366;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    /* Modal */
+    #purchaseModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      color: #000;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #d82929;
+      cursor: pointer;
+    }
+
+    form label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      margin-top: 20px;
+      background-color: #d82929;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      color: #aaa;
+      margin-top: 40px;
+      padding-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    MEGA DADOS
+  </header>
+
+  <div class="container">
+
+    <h2>📆 INTERNET DIÁRIA (24h)</h2>
+    <div class="grid" id="diaria"></div>
+
+    <h2>⏳ VALIDADE SEMANAL (Sem Txuna)</h2>
+    <div class="grid" id="semanal"></div>
+
+    <h2>📅 INTERNET MENSAL (30 dias)</h2>
+    <div class="grid" id="mensal"></div>
+
+    <div class="info">
+      💳 Pagamento via:<br />
+      📲 M-PESA: <strong>841960180</strong> — Letícia Simão<br />
+      📲 E-MOLA: <strong>878698294</strong> — Virgínia Cuna
+      <br /><br />
+      <a class="whatsapp-btn" href="https://chat.whatsapp.com/Jn5R3xYzQAVHXR7TEv6ZrC?mode=ac_t" target="_blank">
+        Entrar no Grupo WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="purchaseModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>FINALIZAR COMPRA</h3>
+      <p><strong>Pacote:</strong> <span id="selectedPackage"></span></p>
+      <p><strong>Preço:</strong> <span id="selectedPrice"></span></p>
+      <form id="purchaseForm">
+        <label for="phoneNumber">Número (ex: 841234567)</label>
+        <input type="tel" id="phoneNumber" required pattern="[0-9]{9}" />
+        <label for="paymentMethod">Forma de Pagamento</label>
+        <select id="paymentMethod" required>
+          <option disabled selected>Escolher</option>
+          <option value="M-PESA">M-PESA</option>
+          <option value="E-MOLA">E-MOLA</option>
+        </select>
+        <button type="submit">Enviar pelo WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Mega Dados — Todos direitos reservados
+Desenvolvido por Helton🧑‍💻
+  </footer>
+
+  <script>
+    const pacotesDiarios = [
+      { pacote: '250MB', preco: '5MT' },
+      { pacote: '512MB', preco: '10MT' },
+      { pacote: '760MB', preco: '15MT' },
+      { pacote: '1024MB', preco: '18MT' },
+      { pacote: '1050MB', preco: '20MT' },
+      { pacote: '1300MB', preco: '25MT' },
+      { pacote: '2048MB', preco: '36MT' },
+      { pacote: '3072MB', preco: '54MT' },
+      { pacote: '4096MB', preco: '80MT' },
+      { pacote: '5120MB', preco: '100MT' },
+    ];
+
+    const pacotesSemanais = [
+      { pacote: '1.7GB', preco: '50MT' },
+      { pacote: '2.9GB', preco: '75MT' },
+      { pacote: '3.4GB', preco: '95MT' },
+      { pacote: '5.2GB', preco: '160MT' },
+      { pacote: '10.0GB', preco: '260MT' },
+    ];
+
+    const pacotesMensais = [
+      { pacote: '10.2GB', preco: '300MT' },
+      { pacote: '20.0GB', preco: '450MT' },
+      { pacote: '30.0GB', preco: '700MT' },
+      { pacote: '40.2GB', preco: '900MT' },
+      { pacote: '50.0GB', preco: '1000MT' },
+    ];
+
+    function criarCards(pacotes, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      pacotes.forEach(({ pacote, preco }) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <p><strong>${pacote}</strong></p>
+          <p>${preco}</p>
+          <button onclick="abrirModal('${pacote}', '${preco}')">Comprar</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    criarCards(pacotesDiarios, 'diaria');
+    criarCards(pacotesSemanais, 'semanal');
+    criarCards(pacotesMensais, 'mensal');
+
+    function abrirModal(pacote, preco) {
+      document.getElementById('selectedPackage').textContent = pacote;
+      document.getElementById('selectedPrice').textContent = preco;
+      document.getElementById('purchaseModal').style.display = 'flex';
+    }
+
+    document.querySelector('.close-modal').addEventListener('click', () => {
+      document.getElementById('purchaseModal').style.display = 'none';
+    });
+
+    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const phone = document.getElementById('phoneNumber').value.trim();
+      const method = document.getElementById('paymentMethod').value;
+      const pacote = document.getElementById('selectedPackage').textContent;
+      const preco = document.getElementById('selectedPrice').textContent;
+
+      if (!phone.match(/^\d{9}$/)) {
+        alert('Insira um número válido com 9 dígitos.');
+        return;
+      }
+
+      const msg = `Olá! Quero comprar o pacote *${pacote}* no valor de *${preco}*.\nNúmero: *258${phone}*\nPagamento: *${method}*`;
+      window.open(`https://wa.me/258841960180?text=${encodeURIComponent(msg)}`, '_blank');
+
+      document.getElementById('purchaseModal').style.display = 'none';
+      this.reset();
+    });
+  </script>
+</body>
+</html>
